@@ -8,6 +8,7 @@ namespace DltNode.Main
 		{
 			Console.WriteLine("Hello World!");
 			Console.WriteLine();
+			Console.WriteLine(1);
 		}
 	}
 }
