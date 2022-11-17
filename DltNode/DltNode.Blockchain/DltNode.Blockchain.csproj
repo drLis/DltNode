@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DltNode.Hash\DltNode.Hash.csproj" />
+  </ItemGroup>
+
 </Project>
