@@ -26,6 +26,11 @@ namespace DltNode.Main
 			Block secondBlock = new Block(transactions1, firstBlock);
 			Console.WriteLine(BitConverter.ToString(secondBlock.previousBlockHash));
 			Console.WriteLine(BitConverter.ToString(secondBlock.blockHash));
+
+			Blockchain.Blockchain blockchain = new Blockchain.Blockchain(firstBlock);
+			Console.WriteLine(blockchain.Height);
+			Console.WriteLine(blockchain.AddNewBlock(secondBlock));
+			Console.WriteLine(blockchain.Height);
 		}
 	}
 }
