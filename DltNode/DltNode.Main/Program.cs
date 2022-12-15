@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using DltNode.Blockchain;
 
 namespace DltNode.Main
 {
@@ -6,9 +8,13 @@ namespace DltNode.Main
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-			Console.WriteLine();
-			Console.WriteLine(1);
+			Transaction tx = new Transaction("Product X has moves from A to B");
+			Console.WriteLine(tx.info);
+			//Console.WriteLine(tx.GetHash()[0]);
+			//String result = Convert.ToString(tx.GetHash());
+			Console.WriteLine(Encoding.Default.GetString(tx.GetHash()));
+			//uint a = 0;
+			//uint b = 5 / a;
 		}
 	}
 }

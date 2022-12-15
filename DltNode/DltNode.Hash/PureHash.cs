@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 
 namespace DltNode.Hash
 {
-	public class PureHash
+	public static class PureHash
 	{
-		public byte[] computeHash(byte[] input)
+		public static byte[] computeHash(byte[] input)
 		{
 			var hashing = SHA256.Create();
 
