@@ -7,7 +7,7 @@ using DltNode.Hash;
 
 namespace DltNode.Blockchain
 {
-    class Block
+    public class Block
     {
         public readonly Byte[] blockHash;
 
@@ -23,20 +23,29 @@ namespace DltNode.Blockchain
         /// <param name="previousBlock">Put null in to first block constructor</param>
         public Block(List<Transaction> transactions, Block previousBlock)
         {
-            zero = Array.Empty<Byte>();
+            zero = new byte[32];
             this.previousBlockHash = previousBlock?.blockHash ?? zero;
             this.transactions = transactions;
+
+            List<Byte[]> hashes = new List<Byte[]>();
+            hashes.Add(previousBlockHash);
+            foreach(var tx in transactions)
+            {
+
+                hashes.Add(tx.GetHash());
+            }
+            blockHash = computeMerkleTreeHash(hashes);
         }
-        public Byte[] computeMerkleTreeHash(Byte[][] hashes)
+        public Byte[] computeMerkleTreeHash(List<Byte[]> hashes)
         {
-            if (hashes.Length == 1)
+            if (hashes.Count == 1)
                 return hashes[0];
-            else if (hashes.Length == 2)
+            else if (hashes.Count == 2)
                 return PureHash.computeHash(hashes[0].Concat(hashes[1]).ToArray());
             else
             {
-                Byte[][] firstPart = hashes[..(hashes.Length / 2)];
-                Byte[][] secondPart = hashes[(hashes.Length / 2)..];
+                List<Byte[]> firstPart = hashes.GetRange(0, hashes.Count / 2);
+                List<Byte[]> secondPart = hashes.GetRange(hashes.Count / 2, hashes.Count - 1);
                 var hashOfLeft = computeMerkleTreeHash(firstPart);
                 var hashOfRight = computeMerkleTreeHash(secondPart);
                 return PureHash.computeHash(hashOfLeft.Concat(hashOfRight).ToArray());
