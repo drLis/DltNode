@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 
 
 namespace DltNode.Hash
@@ -8,9 +7,9 @@ namespace DltNode.Hash
 	{
 		public byte[] computeHash(byte[] input)
 		{
-			var hashing = SHA256.Create();
+			// your implementation
 
-			return hashing.ComputeHash(input);
+			return /*result*/;
 		}
 	}
 }
