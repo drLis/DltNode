@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using DltNode.Hash;
+using DltNode.Consensus;
 
 namespace DltNode.Blockchain
 {
@@ -16,6 +18,8 @@ namespace DltNode.Blockchain
 		public readonly Byte[] previousBlockHash;
 
 		public readonly List<Transaction> transactions;
+
+		public UInt64 nonce = 0;
 
 		/// <summary>
 		/// 
@@ -35,7 +39,21 @@ namespace DltNode.Blockchain
 				hashes.Add(tx.GetHash());
 			}
 
-			blockHash = computeMerkleTreeHash(hashes);
+			var preBlockHash = computeMerkleTreeHash(hashes);
+			blockHash = PureHash.computeHash(BitConverter.GetBytes(nonce).Concat(preBlockHash).ToArray());
+		}
+
+		public void ComputeHashWithTarget(BigInteger target)
+		{
+			List<Byte[]> hashes = new List<Byte[]>();
+			hashes.Add(previousBlockHash);
+			foreach (var tx in transactions)
+			{
+				hashes.Add(tx.GetHash());
+			}
+
+			var preBlockHash = computeMerkleTreeHash(hashes);
+			nonce = ProofOfWork.SolveHashComputationProblem(target, preBlockHash);
 		}
 
 		public Byte[] computeMerkleTreeHash(List<Byte[]> hashes)
