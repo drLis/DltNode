@@ -11,7 +11,7 @@ namespace DltNode.Blockchain
 {
 	public class Block
 	{
-		public readonly Byte[] blockHash;
+		public Byte[] blockHash;
 
 		private readonly Byte[] zero;
 
@@ -54,6 +54,12 @@ namespace DltNode.Blockchain
 
 			var preBlockHash = computeMerkleTreeHash(hashes);
 			nonce = ProofOfWork.SolveHashComputationProblem(target, preBlockHash);
+			blockHash = PureHash.computeHash(BitConverter.GetBytes(nonce).Concat(preBlockHash).ToArray());
+		}
+
+		public Boolean CheckHash(BigInteger target)
+		{
+			return BigInteger.Abs(new BigInteger(blockHash)) < target;
 		}
 
 		public Byte[] computeMerkleTreeHash(List<Byte[]> hashes)

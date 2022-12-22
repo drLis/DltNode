@@ -41,10 +41,12 @@ namespace DltNode.Main
 			firstBlock.ComputeHashWithTarget(target);
 			Console.WriteLine(BitConverter.ToString(firstBlock.blockHash));
 			Console.WriteLine(firstBlock.nonce);
+			Console.WriteLine(firstBlock.CheckHash(target));
 
 			secondBlock.ComputeHashWithTarget(target);
 			Console.WriteLine(BitConverter.ToString(secondBlock.blockHash));
 			Console.WriteLine(secondBlock.nonce);
+			Console.WriteLine(secondBlock.CheckHash(target));
 		}
 	}
 }
