@@ -36,10 +36,17 @@ namespace DltNode.Blockchain
 			}
 		}
 
-		public Boolean VerifySignature(Byte[] punlicKey)
+		public Boolean VerifySignature(RSAParameters sharedParameters)
 		{
+			using (RSA rsa = RSA.Create())
+			{
+				rsa.ImportParameters(sharedParameters);
 
-			return false;
+				RSAPKCS1SignatureDeformatter rsaDeformatter = new(rsa);
+				rsaDeformatter.SetHashAlgorithm(nameof(SHA256));
+
+				return rsaDeformatter.VerifySignature(this.GetHash(), signature);
+			}
 		}
 
 		public Byte[] GetHash() => PureHash.computeHash(Encoding.ASCII.GetBytes(info));
