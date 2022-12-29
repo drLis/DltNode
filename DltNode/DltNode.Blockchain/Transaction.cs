@@ -10,13 +10,17 @@ namespace DltNode.Blockchain
 	{
 		public readonly String info;
 
-		public Byte[] sinature;
+		public Byte[] signature;
 
 		public Byte[] from; // public key of sender
 
-		public Transaction(String info)
+		public Transaction(String info, Byte[] signature = null)
 		{
 			this.info = info;
+			if (!(signature is null))
+			{
+				this.signature = signature;
+			}
 		}
 
 		public void Sign(RSAParameters parameters)
@@ -28,7 +32,7 @@ namespace DltNode.Blockchain
 				RSAPKCS1SignatureFormatter rsaFormatter = new(rsa);
 				rsaFormatter.SetHashAlgorithm(nameof(SHA256));
 
-				sinature = rsaFormatter.CreateSignature(hash);
+				signature = rsaFormatter.CreateSignature(hash);
 			}
 		}
 
