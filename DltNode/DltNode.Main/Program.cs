@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using DltNode.Blockchain;
 namespace DltNode.Main
@@ -8,9 +9,6 @@ namespace DltNode.Main
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World");
-			Console.WriteLine();
-			Console.WriteLine(1);
 			Transaction tx1 = new Transaction("Product X has moved from A to B");
 			Transaction tx2 = new Transaction("Product Y has moved from C to D");
 
@@ -20,6 +18,7 @@ namespace DltNode.Main
 
 			Block firstBlock = new Block(transactions, null);
 			Console.WriteLine(BitConverter.ToString(firstBlock.blockHash));
+
 			Transaction tx0 = new Transaction("Product Z has moved from E to F");
 			List<Transaction> transactions1 = new List<Transaction>();
 			transactions1.Add(tx0);
@@ -32,6 +31,20 @@ namespace DltNode.Main
 			Console.WriteLine(blockchain.Height);
 			Console.WriteLine(blockchain.AddNewBlock(secondBlock));
 			Console.WriteLine(blockchain.Height);
+
+			BigInteger target = new BigInteger(UInt64.MaxValue);
+			target = BigInteger.Pow(target, 3);
+			target = target * UInt32.MaxValue;
+			target = target * UInt16.MaxValue / 128;
+			firstBlock.ComputeHashWithTarget(target);
+			Console.WriteLine(BitConverter.ToString(firstBlock.blockHash));
+			Console.WriteLine(firstBlock.nonce);
+			Console.WriteLine(firstBlock.CheckHash(target));
+
+			secondBlock.ComputeHashWithTarget(target);
+			Console.WriteLine(BitConverter.ToString(secondBlock.blockHash));
+			Console.WriteLine(secondBlock.nonce);
+			Console.WriteLine(secondBlock.CheckHash(target));
 		}
 	}
 }
